@@ -62,8 +62,6 @@ services:
     environment:
       - DOCKER_TLS_CERTDIR=/certs
 
- 
-      
   jenkins:
     build: 
       context: ./jenkins/.
@@ -79,6 +77,8 @@ services:
       - 50000:50000
     depends_on:
       - dind
+      - develop-env
+      - artifactory
     tty: true
     volumes:
       - jenkins-data:/var/jenkins_home:rw
@@ -93,6 +93,8 @@ services:
     image: docker:20.10.17-cli
     container_name: develop-env
     command: sh -c 'while [ 1 ]; do sleep 1; done'
+    depends_on:
+      - dind
     networks:
       devops_training_net:
         ipv4_address: 172.16.236.20
