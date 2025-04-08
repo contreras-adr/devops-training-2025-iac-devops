@@ -1,3 +1,5 @@
+package org.scalian-devops-2025
+
 def getLastGitTag() {
     sh "git tag --sort version:refname | head -n 1 > version.tmp"
     String tag = readFile 'version.tmp'
