@@ -3,4 +3,4 @@ git
 github-branch-source
 blueocean
 docker-workflow
-artifactory
+nexus-artifact-uploader

@@ -8,6 +8,12 @@
 https://gist.github.com/Adhjie/8dcab8ef69a82e0b35d017725f20de19
 https://documentation.ubuntu.com/wsl/en/latest/howto/install-ubuntu-wsl2/
 
+# Install Portainer to manage Docker in Ubuntu
+```bash
+docker-compose up -d portainer
+http://localhost:9443
+```
+
 ### Configure Jekins modules to install in *jenkins/plugins.txt*
 
 
