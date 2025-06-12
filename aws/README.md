@@ -4,6 +4,37 @@
 
 ## 1-  Install AWS CLI and Terraform CLI
 
+                      ┌────────────────────────────┐
+                      │        AWS Region          │
+                      │         eu-west-1          │
+                      └────────────┬───────────────┘
+                                   │
+                      ┌────────────▼─────────────┐
+                      │        VPC (10.0.0.0/16) │
+                      └──────┬──────────┬────────┘
+                             │          │
+                 ┌──────────▼───┐  ┌────▼─────────┐
+                 │ Public Subnet│  │Private Subnet│
+                 │ (10.0.101.0) │  │ (10.0.1.0)   │
+                 └──────┬───────┘  └────┬─────────┘
+                        │              │
+         ┌──────────────▼───┐      ┌────▼────────────────────────────┐
+         │  ECS Fargate Web │      │  Conditionally one of:          │
+         │  (Java WebApp)   │      │                                  │
+         │  Public + SG     │      │  1. ECS Fargate (PostgreSQL)     │
+         └────────────┬─────┘      │     Private Subnet + SG         │
+                      │            │                                  │
+                      │            │  2. RDS PostgreSQL DB Instance   │
+                      │            │     Private Subnet + SG         │
+                      │            └─────────────────────────────────┘
+                      │
+           ┌──────────▼─────────┐
+           │     AWS ECR       │
+           │  java-webapp-repo │
+           └───────────────────┘
+
+
+
 
 
 ## 2- Create Service User for the profile name: "devops-training-2025 "
