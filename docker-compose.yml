@@ -100,6 +100,8 @@ services:
         ipv4_address: 172.16.236.20
         aliases: 
           - develop-env
+    ports:
+      - 18080:8080
     environment:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_TLS_VERIFY: 1
@@ -152,5 +154,41 @@ services:
       devops_training_net:
         aliases: 
           - sonardb
+
+  java-app-github-runner:
+    build:
+      context: github-runner
+      args:
+        RUNNER_VERSION: '2.323.0'
+    depends_on:
+      - dind
+    networks:
+      - devops_training_net
+    environment:
+      REPO: contreras-adr/devops-training-2025-java-app
+      TOKEN: A6CZQVUU6XKCN2YQSSGYRZLH624KM
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_TLS_VERIFY: 1
+
+
+  # runner:
+  #   image: tcardonne/github-runner:latest
+  #   depends_on:
+  #     - dind
+  #   networks:
+  #     - devops_training_net
+  #   environment:
+  #     RUNNER_NAME: "runner-python-app"
+  #     RUNNER_REPOSITORY_URL: devops-training-2025-java-app.git
+  #     RUNNER_ORGANIZATION_URL: https://github.com/contreras-adr
+  #     GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
+  #     RUNNER_TOKEN: A6CZQVQE4UJU2MTCWUKQIODH62OB2
+  #     RUNNER_LABELS: docker
+  #     DOCKER_HOST: tcp://docker:2376
+  #     DOCKER_CERT_PATH: /certs/client
+  #     DOCKER_TLS_VERIFY: 1
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
 
   
