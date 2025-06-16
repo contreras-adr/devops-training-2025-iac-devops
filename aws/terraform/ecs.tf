@@ -2,7 +2,10 @@
 resource "aws_ecs_cluster" "main" {
   name = "ecs-cluster"
   tags = {
-    Project = "ECS-Demo"
+    "Project"     = "aws-terraform-iac"
+    "Owner"       = "devops-training-2025"
+    "Environment" = "dev"
+    "CostCenter"  = "training-2025"
   }
 }
 
@@ -12,18 +15,18 @@ resource "aws_ecs_task_definition" "postgres" {
   family                   = "postgres-db"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "512"
+  cpu                      = "256"
   memory                   = "1024"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([{
     name      = "postgres"
-    image     = "postgres:15"
+    image     = "postgres:16-alpine"
     essential = true
     environment = [
-      { name = "POSTGRES_DB", value = "mydb" },
-      { name = "POSTGRES_USER", value = "admin" },
-      { name = "POSTGRES_PASSWORD", value = "adminpass" }
+      { name = "POSTGRES_DB", value = "knights" },
+      { name = "POSTGRES_USER", value = "root" },
+      { name = "POSTGRES_PASSWORD", value = "rootpwd" }
     ]
     portMappings = [{
       containerPort = 5432
@@ -47,6 +50,9 @@ resource "aws_ecs_service" "postgres" {
   }
 
   tags = {
-    Project = "ECS-Demo"
+    "Project"     = "aws-terraform-iac"
+    "Owner"       = "devops-training-2025"
+    "Environment" = "dev"
+    "CostCenter"  = "training-2025"
   }
 }

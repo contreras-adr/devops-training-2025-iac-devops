@@ -11,7 +11,6 @@ resource "aws_db_instance" "postgres" {
   engine               = "postgres"
   engine_version       = "15.3"
   instance_class       = "db.t3.micro"
-  name                 = "mydb"
   username             = "admin"
   password             = "adminpass123"
   parameter_group_name = "default.postgres15"
@@ -20,6 +19,9 @@ resource "aws_db_instance" "postgres" {
   db_subnet_group_name   = aws_db_subnet_group.db[0].name
 
   tags = {
-    Project = "ECS-Demo"
+    "Project"     = "aws-terraform-iac"
+    "Owner"       = "devops-training-2025"
+    "Environment" = "dev"
+    "CostCenter"  = "training-2025"
   }
 }

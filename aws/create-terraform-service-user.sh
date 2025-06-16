@@ -27,6 +27,7 @@ cat > policy.json <<EOF
         "ecr:*",
         "iam:PassRole",
         "logs:*"
+
       ],
       "Resource": "*"
     }
@@ -39,16 +40,16 @@ aws iam put-group-policy \
   --group-name $GROUP_NAME \
   --policy-name $POLICY_NAME \
   --policy-document file://policy.json \
-  --profile $PROFILE
+  
 
 # 4. Crear el usuario IAM
-aws iam create-user --user-name $USER_NAME --profile $PROFILE
+aws iam create-user --user-name $USER_NAME 
 
 # 5. Añadir usuario al grupo
-aws iam add-user-to-group --user-name $USER_NAME --group-name $GROUP_NAME --profile $PROFILE
+aws iam add-user-to-group --user-name $USER_NAME --group-name $GROUP_NAME 
 
 # 6. Crear claves de acceso
-aws iam create-access-key --user-name $USER_NAME --profile $PROFILE > credentials.json
+aws iam create-access-key --user-name $USER_NAME  > credentials.json
 
 echo "✅ Usuario '$USER_NAME' creado y añadido al grupo '$GROUP_NAME'"
 echo "📁 Claves de acceso almacenadas en 'credentials.json'"

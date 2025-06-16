@@ -20,11 +20,11 @@
                         │              │
          ┌──────────────▼───┐      ┌────▼────────────────────────────┐
          │  ECS Fargate Web │      │  Conditionally one of:          │
-         │  (Java WebApp)   │      │                                  │
-         │  Public + SG     │      │  1. ECS Fargate (PostgreSQL)     │
+         │  (Java WebApp)   │      │                                 │
+         │  Public + SG     │      │  1. ECS Fargate (PostgreSQL)    │
          └────────────┬─────┘      │     Private Subnet + SG         │
-                      │            │                                  │
-                      │            │  2. RDS PostgreSQL DB Instance   │
+                      │            │                                 │
+                      │            │  2. RDS PostgreSQL DB Instance  │
                       │            │     Private Subnet + SG         │
                       │            └─────────────────────────────────┘
                       │
@@ -46,7 +46,7 @@ sh aws/iac/create-terraform-service-user.sh
 
 ### 3- Deploy Infrastructure
 ```bash
-terraform -chdir aws/iac apply 
+terraform -chdir aws/iac apply -var="use_rds=false"
 ```
 
 ### 3- Upload Java App docker image to ECR
@@ -58,22 +58,4 @@ terraform -chdir aws/deploy apply
 ```
 
 
-
-### Install Jenkins in local environment.
-https://github.com/jenkinsci/docker/
-```bash
-docker-compose up -d jenkins
-docker-compose logs jenkins
-```
-
-
-
-
-
-### Create GitHub SSH Key for Jenkins
-```bash
-ssh-keygen -C "contreras.adr@outlook.com" -f ~/.ssh/jenkins-github
-cat ~/.ssh/jenkins-github
-```
-
-
+![alt text](image.png)

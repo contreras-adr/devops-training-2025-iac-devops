@@ -1,0 +1,66 @@
+# CloudFormation template to deploy:
+# - A VPC with public and private subnets
+# - ECS Fargate cluster
+# - ECR repository
+# - ECS service for Java webapp (public)
+# - Optional RDS PostgreSQL (or Fargate PostgreSQL if desired)
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ECS + ECR + Optional RDS PostgreSQL with FinOps tagging
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: ecs-finops-demo
+  UseRDS:
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: true
+
+Resources:
+
+  ECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub "${ProjectName}-webapp-repo"
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+              {
+                "rulePriority": 1,
+                "description": "Expire untagged images after 30 days",
+                "selection": {
+                  "tagStatus": "untagged",
+                  "countType": "sinceImagePushed",
+                  "countUnit": "days",
+                  "countNumber": 30
+                },
+                "action": {
+                  "type": "expire"
+                }
+              }
+            ]
+          }
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub "${ProjectName}-cluster"
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+
+  # Additional VPC, Subnets, Security Groups, Task Definitions, ECS Services, and optionally RDS resources
+  # would be defined here similarly to Terraform logic.
+
+Outputs:
+  ECRRepoURI:
+    Description: URI of the ECR repository
+    Value: !GetAtt ECRRepository.RepositoryUri
+
+  ECSClusterName:
+    Description: Name of the ECS Cluster
+    Value: !Ref ECSCluster

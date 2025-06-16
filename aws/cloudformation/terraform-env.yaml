@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: IAM user, policy, and S3 bucket for Terraform backend
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: terraform-project
+
+Resources:
+
+  TerraformS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${ProjectName}-tfstate"
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+
+  TerraformUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Sub "${ProjectName}-tf-user"
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+
+  TerraformUserPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub "${ProjectName}-tf-policy"
+      Users:
+        - !Ref TerraformUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - ec2:*
+              - ecs:*
+              - ecr:*
+              - iam:PassRole
+              - logs:*
+              - s3:*
+              - rds:*
+            Resource: "*"
+
+Outputs:
+  TerraformUserName:
+    Description: IAM user for Terraform
+    Value: !Ref TerraformUser
+
+  TerraformS3BucketName:
+    Description: S3 bucket for storing Terraform backend state
+    Value: !Ref TerraformS3Bucket

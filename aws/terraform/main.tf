@@ -14,9 +14,9 @@ module "vpc" {
   single_nat_gateway = true
 
   tags = {
-    Project     = "ECS-Demo"
-    Owner       = "devops-training-2025"
-    Environment = "dev"
-    CostCenter  = "training-2025"
+    "Project"     = "aws-terraform-iac"
+    "Owner"       = "devops-training-2025"
+    "Environment" = "dev"
+    "CostCenter"  = "training-2025"
   }
 }
