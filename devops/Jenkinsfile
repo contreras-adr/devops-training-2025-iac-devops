@@ -1,36 +1,22 @@
 pipeline {
-    agent any
+  agent any
+  stages {
 
-    stages {
-
-        stage('Checkout') {
-            steps {
-                sshagent(['5c06c64b-471a-472d-a582-4cd084afac0c']) {
-                    sh 'git clone -b develop git@github.com:davilo02/devops-training-2025-iac-devops.git repo'
-                }
-            }
+    stage('Stage 1') {
+      steps {
+        script {
+          echo 'Stage 1'
         }
-
-        stage('Stage 1') {
-            steps {
-                dir('repo') {
-                    script {
-                        echo 'Stage 1'
-                    }
-                }
-            }
-        }
-
-        stage('Stage 2') {
-            steps {
-                dir('repo') {
-                    script {
-                        echo 'Stage 2'
-                    }
-                }
-            }
-        }
-
+      }
     }
-}
 
+    stage('Stage 2') {
+      steps {
+        script {
+          echo 'Stage 2'
+        }
+      }
+    }
+
+  }
+}

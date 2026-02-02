@@ -1,0 +1,10 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Instalamos git, ssh-client y openssl
+RUN apt-get update && \
+    apt-get install -y git openssh-client openssl && \
+    apt-get clean
+
+USER jenkins
